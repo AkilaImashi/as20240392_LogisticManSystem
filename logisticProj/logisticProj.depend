@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1761315414 source:c:\users\savindu\onedrive\desktop\logisticproj\main.c
+	<stdio.h>
+	<string.h>
+	"city.h"
+
+1761310723 c:\users\savindu\onedrive\desktop\logisticproj\city.h
+
