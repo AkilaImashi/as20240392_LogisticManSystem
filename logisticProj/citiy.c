@@ -7,15 +7,15 @@ void getCities(char cities[][30], int *cityCount)
 {
     char temp[][30] =
     {
-        "Anuradhapura", "Ampara", "Badulla", "Bandarawela", "Batticaloa",
-        "Colombo", "Dankotuwa", "Dambulla", "Deniyaya", "Eheliyagoda",
+        "Anuradhapura", "Ampara", "Badulla", "Bandarawela", "Batticaloa"
+        /*,"Colombo", "Dankotuwa", "Dambulla", "Deniyaya", "Eheliyagoda",
         "Gampaha", "Gampola", "Galle", "Halawatha", "Hambantota",
         "Ibbagamuwa", "Ja-Ela", "Jaffna", "Katunayaka", "Kalutara",
         "Kandy", "Katharagama", "Matara", "Mannar", "Polonnaruwa",
-        "Ratnapura", "Thissa", "Tangalle", "Trincomalee", "Vavuniya"
+        "Ratnapura", "Thissa", "Tangalle", "Trincomalee", "Vavuniya"*/
     };
 
-    int size = 30;
+    int size = sizeof(temp) / sizeof(temp[0]);
 
     for (int i = 0; i < size; i++)
     {

@@ -6,3 +6,23 @@
 
 1761310723 c:\users\savindu\onedrive\desktop\logisticproj\city.h
 
+1761315414 source:c:\users\savindu\onedrive\desktop\cscassignment\as20240392_logisticmansystem\logisticproj\main.c
+	<stdio.h>
+	<string.h>
+	"city.h"
+
+1761310723 c:\users\savindu\onedrive\desktop\cscassignment\as20240392_logisticmansystem\logisticproj\city.h
+
+1761332895 source:c:\users\savindu\onedrive\desktop\cscassignment\as20240392_logisticmansystem\logisticproj\distance.c
+	<stdio.h>
+	"distance.h"
+	"city.h"
+
+1761328678 c:\users\savindu\onedrive\desktop\cscassignment\as20240392_logisticmansystem\logisticproj\distance.h
+	"city.h"
+
+1761328860 source:c:\users\savindu\onedrive\desktop\cscassignment\as20240392_logisticmansystem\logisticproj\citiy.c
+	<stdio.h>
+	<string.h>
+	"city.h"
+
