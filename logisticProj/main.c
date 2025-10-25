@@ -78,6 +78,10 @@ int main()
             handleDeliveryRequest(citiesArr, cityCount, distance, vehicles);
             break;
 
+        case 5:
+            viewAllDeliveries(citiesArr, deliveries, deliveryCount);
+            break;
+
         case 8:
             printf("Exiting program...\n");
             break;

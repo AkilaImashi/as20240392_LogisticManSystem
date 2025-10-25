@@ -7,6 +7,8 @@
 #include "distance.h"
 #include "vehicle.h"
 
+#define MAX_DELIVERIES 50
+
 typedef struct
 {
     int sourceIndex;
@@ -27,7 +29,7 @@ typedef struct
 void handleDeliveryRequest(char cities[][30], int cityCount, int distance[MAX_CITIES][MAX_CITIES],
                            Vehicle vehicles[]);
 
-
+void viewAllDeliveries(char cities[][30], Delivery deliveries[], int deliveryCount);
 
 
 
