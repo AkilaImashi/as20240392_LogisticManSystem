@@ -30,7 +30,7 @@ void inputOrEditDistance(int distance[MAX_CITIES][MAX_CITIES], char cities[][30]
 
     printf("\nEnter first city number: ");
     scanf("%d", &city1);
-    printf("\nEnter second city number: ");
+    printf("Enter second city number: ");
     scanf("%d", &city2);
 
     if(city1 < 1 || city1 > cityCount || city2 < 1 || city2 > cityCount)
@@ -46,7 +46,7 @@ void inputOrEditDistance(int distance[MAX_CITIES][MAX_CITIES], char cities[][30]
     }
 
     printf("Enter distance between %s and %s (in km): ", cities[city1 - 1], cities[city2 - 1]);
-    scanf("%d", dist);
+    scanf("%d", &dist);
 
     distance[city1 - 1][city2 - 1] = dist;
     distance[city2 - 1][city1 - 1] = dist;
@@ -59,20 +59,28 @@ void displayDistanceTable(int distance[MAX_CITIES][MAX_CITIES], char cities[][30
 {
     if(cityCount == 0)
     {
-        printf("No cities available to display ");
+        printf("No cities available to display\n ");
         return;
     }
 
-    printf("\n---Distance Table---\n");
+    printf("\n-----Distance Table-----\n");
     printf("%15s", " ");
+
+    for(int i = 0; i < cityCount; i++)
+    {
+        printf("%15s", cities[i]);
+    }
     printf("\n");
 
     for(int i = 0; i < cityCount; i ++)
     {
         printf("%15s", cities[i]);
-        for(int j = 0; j < cityCount; j++){
+
+        for(int j = 0; j < cityCount; j++)
+        {
+            //printf("%15s", cities[i]);
             if(distance[i][j] == -1)
-            printf("%15s","-");
+                printf("%15s","-");
             else
                 printf("%15d", distance[i][j]);
         }
@@ -80,7 +88,7 @@ void displayDistanceTable(int distance[MAX_CITIES][MAX_CITIES], char cities[][30
 
 
     }
-    printf("==========================================/n");
+    printf("======================================================\n");
 
 
 }
