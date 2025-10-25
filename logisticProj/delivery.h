@@ -11,8 +11,17 @@ typedef struct
 {
     int sourceIndex;
     int destinationIndex;
-    double weight;
+    double weight;      //kg
     int vehicleIndex;
+    double distance;    //in km
+    double deliveryCost;
+    double timeHours;
+    double fuelUsed;
+    double fuelCost;
+    double totalCost;
+    double profit;
+    double cutomerCharge;
+
 }Delivery;
 
 void handleDeliveryRequest(char cities[][30], int cityCount, int distance[MAX_CITIES][MAX_CITIES],
