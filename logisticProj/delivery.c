@@ -4,8 +4,10 @@
 
 #define FUEL_PRICE 310.00  //LKR per litre
 
-void handleDeliveryRequest(char cities[][30], int cityCount, int distance[MAX_CITIES][MAX_CITIES],
-                           Vehicle vehicles[], Delivery deliveries[], int *deliveryCount)
+void handleDeliveryRequest(char cities[][30], int cityCount,
+                           int distance[MAX_CITIES][MAX_CITIES],
+                           Vehicle vehicles[],
+                           Delivery deliveries[], int *deliveryCount)
 {
     if(*deliveryCount >= MAX_DELIVERIES)
     {
@@ -92,7 +94,7 @@ void handleDeliveryRequest(char cities[][30], int cityCount, int distance[MAX_CI
     //step 05: cost, time, fuel calculations e
 
     //a.delivery cost
-    d.deliveryCost = d.distance * selected.ratePerKm * (1 + d.weight*(1/10000));
+    d.deliveryCost = d.distance * v.ratePerKm * (1 + d.weight*(1/10000));
 
     //b.estimated delivery time(hours)
     d.timeHours =  d.distance / v.speed;
@@ -114,7 +116,7 @@ void handleDeliveryRequest(char cities[][30], int cityCount, int distance[MAX_CI
 
     //storing delivery record
     deliveries[*deliveryCount] = d;
-    (*deliveryCount)++
+    (*deliveryCount)++;
 
 
     //output
@@ -135,9 +137,9 @@ void handleDeliveryRequest(char cities[][30], int cityCount, int distance[MAX_CI
     printf("-------------------------------------------------\n");
     printf("Final Customer Charge   : LKR %.2f\n", d.cutomerCharge);
     printf("=====================================================\n");
+}
 
-
-    void viewAllDeliveries(char cities[][30], Delivery deliveries[], int deliveryCount)
+void viewAllDeliveries(char cities[][30], Delivery deliveries[], int deliveryCount)
 {
     if (deliveryCount == 0)
     {
@@ -157,10 +159,11 @@ void handleDeliveryRequest(char cities[][30], int cityCount, int distance[MAX_CI
                cities[deliveries[i].destinationIndex - 1],
                deliveries[i].vehicleIndex,
                deliveries[i].distance,
-               deliveries[i].customerCharge);
+               deliveries[i].cutomerCharge);
     }
 
     printf("=====================================================\n");
 
 
 }
+

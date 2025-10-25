@@ -26,8 +26,10 @@ typedef struct
 
 }Delivery;
 
-void handleDeliveryRequest(char cities[][30], int cityCount, int distance[MAX_CITIES][MAX_CITIES],
-                           Vehicle vehicles[]);
+void handleDeliveryRequest(char cities[][30], int cityCount,
+                           int distance[MAX_CITIES][MAX_CITIES],
+                           Vehicle vehicles[],
+                           Delivery deliveries[], int *deliveryCount);
 
 void viewAllDeliveries(char cities[][30], Delivery deliveries[], int deliveryCount);
 
