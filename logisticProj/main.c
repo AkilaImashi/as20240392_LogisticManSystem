@@ -9,9 +9,9 @@
 
 int main()
 {
-    char citiesArr[MAX_CITIES][30];
-    int cityCount = 0;
-    int distance[MAX_CITIES][MAX_CITIES];
+    char citiesArr[MAX_CITIES][30];  //Array of city  names
+    int cityCount = 0;     //current number of cities
+    int distance[MAX_CITIES][MAX_CITIES]; //2D array for distance
     Vehicle vehicles[VEHICLE_COUNT];
     Delivery deliveries[MAX_DELIVERIES];
     int deliveryCount = 0;
@@ -73,7 +73,7 @@ int main()
                 printf("1. Input/Edit Distance\n");
                 printf("2. Display Distance Table\n");
                 printf("3. Back to Main Menu\n");
-                printf("Enter your choice: ");
+                printf("\nEnter your choice: ");
                 scanf("%d", &distChoice);
 
                 switch (distChoice)

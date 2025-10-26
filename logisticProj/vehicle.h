@@ -5,11 +5,11 @@
 #define VEHICLE_COUNT 3
 
 typedef struct {
-    char type[20];
-    int capacity;
-    double ratePerKm;
-    double speed;
-    double efficiency;
+    char type[20]; //vehicle type name
+    int capacity;   //maximum load capacity
+    double ratePerKm;     //cost per kilometer(LKR)
+    double speed;   //Average speed(km/h)
+    double efficiency;  //fuel efficiency(km/l)
 
 
 }Vehicle;

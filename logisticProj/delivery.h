@@ -11,18 +11,18 @@
 
 typedef struct
 {
-    int sourceIndex;
-    int destinationIndex;
-    double weight;      //kg
-    int vehicleIndex;
-    double distance;    //in km
-    double deliveryCost;
-    double timeHours; //hours
-    double fuelUsed;
-    double fuelCost;
-    double totalCost;
-    double profit;
-    double customerCharge;
+    int sourceIndex;    // Source city index
+    int destinationIndex;   // Destination city index
+    double weight;      // Cargo weight (kg)
+    int vehicleIndex;   // Selected vehicle
+    double distance;    // Total distance (km)
+    double deliveryCost;     // Base delivery cost
+    double timeHours;   // Estimated time
+    double fuelUsed;     // Fuel consumption (liters)
+    double fuelCost;    // Fuel cost (LKR)
+    double totalCost;   // Operational cost
+    double profit;      // Profit margin
+    double customerCharge;  // Final customer charge
 
 }Delivery;
 
