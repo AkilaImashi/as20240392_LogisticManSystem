@@ -5,11 +5,11 @@
 
 void initializeDistance(int distance[MAX_CITIES][MAX_CITIES], int cityCount)
 {
-    for(int i = 0; i < cityCount; i++)
+    for(int i = 0; i < MAX_CITIES; i++)
     {
-        for(int j = 0; j < cityCount; j++)
+        for(int j = 0; j < MAX_CITIES; j++)
         {
-            if(i == j)
+            if(i < cityCount && j < cityCount && i == j)
                 distance[i][j] = 0;
 
             else
@@ -29,29 +29,46 @@ void inputOrEditDistance(int distance[MAX_CITIES][MAX_CITIES], char cities[][30]
     }
 
     printf("\nEnter first city number: ");
-    scanf("%d", &city1);
+    if(scanf("%d", &city1) != 1)
+    {
+        printf("Invalid input!\n");
+        while(getchar() != '\n');
+        return ;
+    }
+
     printf("Enter second city number: ");
-    scanf("%d", &city2);
+    if(scanf("%d", &city2) != 1)
+    {
+        printf("Invalid input!\n");
+        while(getchar() != '\n'); // Clear invalid input
+        return ;
+    }
 
     if(city1 < 1 || city1 > cityCount || city2 < 1 || city2 > cityCount)
     {
-        printf("Invalid city number !\n");
-        return;
+        printf("Invalid city number!\n");
+        return ;
     }
 
     if(city1 == city2)
     {
         printf("You entered the same city for both inputs!\n");
-        return;
+        return ;
     }
 
     printf("Enter distance between %s and %s (in km): ", cities[city1 - 1], cities[city2 - 1]);
-    scanf("%d", &dist);
+    if(scanf("%d", &dist) != 1 || dist < 0)
+    {
+        printf("Invalid distance! Must be a non-negative number.\n");
+        while(getchar() != '\n'); // Clear input buffer
+        return;
+    }
 
-    distance[city1 - 1][city2 - 1] = dist;
-    distance[city2 - 1][city1 - 1] = dist;
+        distance[city1 - 1][city2 - 1] = dist;
+        distance[city2 - 1][city1 - 1] = dist;
 
-    printf("Distance updated successfully!\n");
+        printf("Distance updated successfully!\n");
+
 
 }
 

@@ -22,7 +22,7 @@ typedef struct
     double fuelCost;
     double totalCost;
     double profit;
-    double cutomerCharge;
+    double customerCharge;
 
 }Delivery;
 

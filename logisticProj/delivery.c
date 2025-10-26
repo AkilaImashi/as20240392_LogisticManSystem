@@ -1,28 +1,27 @@
-//delivery.c
+// delivery.c
 #include <stdio.h>
 #include "delivery.h"
+#include "route.h"
 
-#define FUEL_PRICE 310.00  //LKR per litre
+#define FUEL_PRICE 310.00  // LKR per litre
 
 void handleDeliveryRequest(char cities[][30], int cityCount,
                            int distance[MAX_CITIES][MAX_CITIES],
                            Vehicle vehicles[],
                            Delivery deliveries[], int *deliveryCount)
 {
-    if(*deliveryCount >= MAX_DELIVERIES)
+    if (*deliveryCount >= MAX_DELIVERIES)
     {
         printf("Delivery record limit (%d) reached!\n", MAX_DELIVERIES);
         return;
     }
 
-
     Delivery d;
-    //int valide = 1;
 
-    printf("\n======Delivery Request=====\n");
+    printf("\n====== Delivery Request ======\n");
 
-    //display cities
-    for(int i = 0; i < cityCount;  i++)
+    // Display cities
+    for (int i = 0; i < cityCount; i++)
         printf("%2d. %s\n", i + 1, cities[i]);
 
     printf("\nEnter source city number: ");
@@ -31,54 +30,61 @@ void handleDeliveryRequest(char cities[][30], int cityCount,
     printf("Enter destination city number: ");
     scanf("%d", &d.destinationIndex);
 
-    //validate city number
-    if(d.sourceIndex < 1 || d.sourceIndex > cityCount ||
-            d.destinationIndex < 1 || d.destinationIndex > cityCount)
+    // Validate city numbers
+    if (d.sourceIndex < 1 || d.sourceIndex > cityCount ||
+        d.destinationIndex < 1 || d.destinationIndex > cityCount)
     {
         printf("Invalid city numbers!\n");
         return;
     }
 
-    //validate source != destination
-    if(d.sourceIndex == d.destinationIndex)
+    // Validate source != destination
+    if (d.sourceIndex == d.destinationIndex)
     {
-        printf("Error! source and destinaion cannot be same \n");
+        printf("Error: Source and destination cannot be the same.\n");
         return;
     }
 
-    //check distance availability
-    d.distance = distance[d.sourceIndex - 1][d.destinationIndex - 1];
+    // Find least-distance path
+    int path[MAX_CITIES];
+    int pathLen = 0;
 
-    if(d.distance <= 0)
+    int minDist = findLeastDistance(distance, cityCount,
+                                    d.sourceIndex - 1,
+                                    d.destinationIndex - 1,
+                                    path, &pathLen);
+
+    if (minDist >= INF || pathLen == 0)
     {
-        printf("Error: Distance between %s and %s is not set yet.\n",
+        printf("Error: No valid route found between %s and %s.\n",
                cities[d.sourceIndex - 1], cities[d.destinationIndex - 1]);
         return;
     }
 
-    //weight
-    printf("Enter weight of goods(kg): ");
-    scanf("%lf", &d.weight);
+    d.distance = minDist;
+    printf("\nOptimal Route Found:\n");
+    displayRoute(cities, path, pathLen, minDist);
 
-    if(d.weight <=0)
+    // Weight input
+    printf("Enter weight of goods (kg): ");
+    scanf("%lf", &d.weight);
+    if (d.weight <= 0)
     {
-        printf("invalid weight!\n");
+        printf("Invalid weight!\n");
         return;
     }
 
-    //choose vehicle
+    // Choose vehicle
     printf("\nSelect vehicle type:\n");
-    for(int i = 0; i < VEHICLE_COUNT; i++)
-    {
-        printf("%d. %s(Capacity : %d kg)\n", i + 1, vehicles[i].type,
-               vehicles[i].capacity);
-    }
+    for (int i = 0; i < VEHICLE_COUNT; i++)
+        printf("%d. %s (Capacity: %d kg)\n", i + 1, vehicles[i].type, vehicles[i].capacity);
+
     printf("Enter choice: ");
     scanf("%d", &d.vehicleIndex);
 
-    if(d.vehicleIndex < 1 || d.vehicleIndex > VEHICLE_COUNT)
+    if (d.vehicleIndex < 1 || d.vehicleIndex > VEHICLE_COUNT)
     {
-        printf("Invalid vehicle selection\n");
+        printf("Invalid vehicle selection!\n");
         return;
     }
 
@@ -91,54 +97,54 @@ void handleDeliveryRequest(char cities[][30], int cityCount,
         return;
     }
 
-    //step 05: cost, time, fuel calculations e
+    // === Step 5: Cost, time, and fuel calculations ===
 
-    //a.delivery cost
-    d.deliveryCost = d.distance * v.ratePerKm * (1 + d.weight*(1/10000));
+    // a. Delivery Cost
+    d.deliveryCost = d.distance * v.ratePerKm * (1 + d.weight / 10000.0);
 
-    //b.estimated delivery time(hours)
-    d.timeHours =  d.distance / v.speed;
+    // b. Estimated delivery time (hours)
+    d.timeHours = d.distance / v.speed;
 
-    //c.fuel consumption
+    // c. Fuel consumption (litres)
     d.fuelUsed = d.distance / v.efficiency;
 
-    //d. Fuel Cost:
+    // d. Fuel cost
     d.fuelCost = d.fuelUsed * FUEL_PRICE;
 
-    //e.Total Operational Cost
+    // e. Total operational cost
     d.totalCost = d.deliveryCost + d.fuelCost;
 
-    //f.profit(25% of base delivery cost)
+    // f. Profit (25% of base delivery cost)
     d.profit = d.deliveryCost * 0.25;
 
-    //g.final customer charge
-    d.cutomerCharge = d.totalCost + d.profit;
+    // g. Final customer charge
+    d.customerCharge = d.totalCost + d.profit;
 
-    //storing delivery record
+    // Store delivery record
     deliveries[*deliveryCount] = d;
     (*deliveryCount)++;
 
-
-    //output
+    // === Output summary ===
     printf("\n--- DELIVERY SUMMARY ---\n");
-    printf("From            : %s\n", cities[d.sourceIndex - 1]);
-    printf("To              : %s\n", cities[d.destinationIndex - 1]);
-    printf("Vehile          : %s\n", v.type);
-    printf("Distance        : %.2f km\n", d.distance);
-    //printf("Vehicle         : %s\n", selected.type);
-    printf("Weight          : %.2f kg\n", d.weight);
-    printf("--------------------------\n");
-    printf("Delivery Cost   : LKR %.2f\n", d.deliveryCost);
-    printf("Fuel Used       : %.2f liters\n", d.fuelUsed);
-    printf("Fuel Cost       : LKR %.2f\n", d.fuelCost);
-    printf("OPerational Cost: LKR %.2f\n", d.totalCost);
-    printf("Estimated Time  : %.2f hours\n", d.timeHours);
-    printf("Profit (25%%)   : LKR %.2f\n", d.profit);
-    printf("-------------------------------------------------\n");
-    printf("Final Customer Charge   : LKR %.2f\n", d.cutomerCharge);
-    printf("=====================================================\n");
+    printf("From             : %s\n", cities[d.sourceIndex - 1]);
+    printf("To               : %s\n", cities[d.destinationIndex - 1]);
+    printf("Vehicle          : %s\n", v.type);
+    printf("Distance         : %.2f km\n", d.distance);
+    printf("Weight           : %.2f kg\n", d.weight);
+    printf("--------------------------------------\n");
+    printf("Delivery Cost    : LKR %.2f\n", d.deliveryCost);
+    printf("Fuel Used        : %.2f liters\n", d.fuelUsed);
+    printf("Fuel Cost        : LKR %.2f\n", d.fuelCost);
+    printf("Operational Cost : LKR %.2f\n", d.totalCost);
+    printf("Estimated Time   : %.2f hours\n", d.timeHours);
+    printf("Profit (25%%)     : LKR %.2f\n", d.profit);
+    printf("--------------------------------------\n");
+    printf("Final Customer Charge : LKR %.2f\n", d.customerCharge);
+    printf("======================================\n");
 }
 
+
+// View all deliveries
 void viewAllDeliveries(char cities[][30], Delivery deliveries[], int deliveryCount)
 {
     if (deliveryCount == 0)
@@ -148,22 +154,19 @@ void viewAllDeliveries(char cities[][30], Delivery deliveries[], int deliveryCou
     }
 
     printf("\n================= DELIVERY RECORDS =================\n");
-    printf("%-3s %-12s %-12s %-8s %-10s %-10s\n",
+    printf("%-3s %-12s %-12s %-10s %-10s %-10s\n",
            "No", "Source", "Destination", "Veh", "Dist(km)", "Charge");
 
     for (int i = 0; i < deliveryCount; i++)
     {
-        printf("%-3d %-12s %-12s %-8d %-10.2f %-10.2f\n",
+        printf("%-3d %-12s %-12s %-10d %-10.2f %-10.2f\n",
                i + 1,
                cities[deliveries[i].sourceIndex - 1],
                cities[deliveries[i].destinationIndex - 1],
                deliveries[i].vehicleIndex,
                deliveries[i].distance,
-               deliveries[i].cutomerCharge);
+               deliveries[i].customerCharge);
     }
 
     printf("=====================================================\n");
-
-
 }
-

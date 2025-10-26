@@ -58,7 +58,7 @@ void addCity(char cities[][30], int *cityCount)
     {
         if(strcmp(cities[i], newCity) == 0)
         {
-            printf("City alread exist!\n");
+            printf("City already exist!\n");
             return;
         }
     }
