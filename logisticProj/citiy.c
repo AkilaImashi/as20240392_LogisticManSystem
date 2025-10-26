@@ -78,7 +78,7 @@ void addCity(char cities[][30], int *cityCount, int distance[MAX_CITIES][MAX_CIT
 
 }
 
-void removeCity(char cities[][30], int *cityCount)
+void removeCity(char cities[][30], int *cityCount, int distance[MAX_CITIES][MAX_CITIES])
 {
     if(*cityCount == 0)
     {
@@ -89,6 +89,7 @@ void removeCity(char cities[][30], int *cityCount)
     displayCities(cities, *cityCount);
     int index;
     printf("Enter city number to remove: ");
+
     if(scanf("%d", &index) != 1)
     {
         printf("Invalid input!\n");
@@ -104,7 +105,7 @@ void removeCity(char cities[][30], int *cityCount)
 
     int removeIndex = index - 1;
 
-    for(int  i = removeIndex; i < *cityCount; i++)
+    for(int  i = removeIndex; i < *cityCount - 1; i++)
     {
         strcpy(cities[i], cities[i + 1]);
         for(int j = 0; j < *cityCount; j++)

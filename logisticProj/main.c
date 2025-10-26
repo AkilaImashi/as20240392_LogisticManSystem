@@ -21,10 +21,6 @@ int main()
     // Initialize distance matrix
     initializeDistance(distance, MAX_CITIES);
 
-
-    initializeDistance(distance, cityCount);
-    initializeVehicles(vehicles);
-
     //load routes from file
     printf("\n=== Loading saved data ===\n");
     int routesLoaded = loadRoutesFromFile(citiesArr, &cityCount, distance);
@@ -115,7 +111,7 @@ int main()
             break;
 
         case 7:
-            loadDeliveriesFromFile(deliveries, &deliveryCount, citiesArr);
+            saveRoutesToFile(citiesArr, cityCount, distance);
             break;
 
 
