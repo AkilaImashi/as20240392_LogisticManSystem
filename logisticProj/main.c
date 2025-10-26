@@ -5,6 +5,7 @@
 #include "distance.h"
 #include "vehicle.h"
 #include "delivery.h"
+#include "route_file.h"
 
 
 int main()
@@ -23,6 +24,19 @@ int main()
     initializeDistance(distance, cityCount);
     initializeVehicles(vehicles);
 
+    //load routes from file
+    printf("\n=== Loading saved data ===\n");
+    int routesLoaded = loadRoutesFromFile(citiesArr, &cityCount, distance);
+
+    if (!routesLoaded)
+    {
+        getCities(citiesArr, &cityCount);
+        initializeDistance(distance, cityCount);
+    }
+
+    // Load delivery history
+    loadDeliveriesFromFile(deliveries, &deliveryCount, citiesArr);
+    printf("=========================\n\n");
 
 
     int choice;
@@ -38,7 +52,12 @@ int main()
         printf("7. Load deliveries\n");
         printf("8. Exit\n");
         printf("Enter your choice: ");
-        scanf("%d", &choice);
+        if (scanf("%d", &choice) != 1)
+        {
+            printf("Invalid input!\n");
+            while(getchar() != '\n'); // Clear input buffer
+            continue;
+        }
 
         switch (choice)
         {
@@ -100,9 +119,10 @@ int main()
 
 
         case 8:
-            printf("Saving deliveries before exit...\n");
+            printf("\nSaving deliveries before exit...\n");
+            saveRoutesToFile(citiesArr, cityCount, distance);
             saveDeliveriesToFile(deliveries, deliveryCount, citiesArr);
-            printf("Exiting program...\n");
+            printf("\n Exiting program...\n");
             break;
 
 
@@ -116,7 +136,6 @@ int main()
     while(choice != 8);
 
     printf("\nProgramme ended!\n");
-
     return 0;
 }
 

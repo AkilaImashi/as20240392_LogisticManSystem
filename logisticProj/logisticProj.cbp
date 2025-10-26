@@ -50,6 +50,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="route.h" />
+		<Unit filename="route_file.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="route_file.h" />
 		<Unit filename="vehicle.c">
 			<Option compilerVar="CC" />
 		</Unit>

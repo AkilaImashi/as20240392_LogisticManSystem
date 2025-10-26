@@ -224,13 +224,23 @@ int loadDeliveriesFromFile(Delivery deliveries[], int *deliveryCount, char citie
     if (!fp)
     {
         printf("No previous delivery records found (deliveries.txt missing).\n");
+        *deliveryCount = 0;
         return 0;
     }
 
-    if(fscanf(fp, "%d", deliveryCount) != 1)  // FIX: Added input validation
+    if (fscanf(fp, "%d", deliveryCount) != 1)
     {
         printf("Error reading delivery count from file!\n");
         fclose(fp);
+        *deliveryCount = 0;
+        return 0;
+    }
+
+    if (*deliveryCount < 0 || *deliveryCount > MAX_DELIVERIES)
+    {
+        printf("Error: Invalid delivery count in file (%d)!\n", *deliveryCount);
+        fclose(fp);
+        *deliveryCount = 0;
         return 0;
     }
 
@@ -243,22 +253,21 @@ int loadDeliveriesFromFile(Delivery deliveries[], int *deliveryCount, char citie
                             &d.distance, &d.deliveryCost, &d.timeHours, &d.fuelUsed,
                             &d.fuelCost, &d.totalCost, &d.profit, &d.customerCharge);
 
-        if(result != 12)
+        if (result != 12)  //Check if all 12 values were read
         {
-            printf("Error reading delivery data from file!\n");
+            printf("Error reading delivery data from file at record %d!\n", i + 1);
             fclose(fp);
+            *deliveryCount = i;  // Set to number of successfully loaded deliveries
             return i;
         }
 
         deliveries[i] = d;
-
     }
 
     fclose(fp);
     printf("%d deliveries loaded successfully from deliveries.txt!\n", *deliveryCount);
     return *deliveryCount;
 }
-
 
 
 
