@@ -17,7 +17,7 @@ typedef struct
     int vehicleIndex;
     double distance;    //in km
     double deliveryCost;
-    double timeHours;
+    double timeHours; //hours
     double fuelUsed;
     double fuelCost;
     double totalCost;

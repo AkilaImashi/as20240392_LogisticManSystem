@@ -1,7 +1,8 @@
 // city.c
 #include <stdio.h>
 #include <string.h>
-#include "city.h"
+#include "city.h
+#include "distance.h"
 
 void getCities(char cities[][30], int *cityCount)
 {
@@ -39,16 +40,13 @@ void displayCities(char cities[][30], int cityCount)
     }
 }
 
-
-
-void addCity(char cities[][30], int *cityCount)
+void addCity(char cities[][30], int *cityCount, int distance[MAX_CITIES][MAX_CITIES])
 {
     if(*cityCount >= MAX_CITIES)
     {
         printf("City limit reached (max %d)!\n", MAX_CITIES);
         return;
     }
-
 
     char newCity[30];
     printf("New city name: ");
@@ -64,8 +62,19 @@ void addCity(char cities[][30], int *cityCount)
     }
 
     strcpy(cities[*cityCount], newCity);
+
+    int newIndex = *cityCount;
+    distance[newIndex][newIndex] = 0;
+
+    for(int i = 0; i < *cityCount; i++)
+    {
+        distance[newIndex][i] = -1;
+        distance[i][newIndex] = -1;
+    }
+
     (*cityCount)++;
     printf("'%s' city added successfully!\n", newCity);
+    printf("Note: Please set distances for the new city using Distance Management.\n");
 
 }
 
@@ -74,12 +83,18 @@ void removeCity(char cities[][30], int *cityCount)
     if(*cityCount == 0)
     {
         printf("No cities to remove.\n");
+        return;
     }
 
     displayCities(cities, *cityCount);
     int index;
     printf("Enter city number to remove: ");
-    scanf("%d", &index);
+    if(scanf("%d", &index) != 1)
+    {
+        printf("Invalid input!\n");
+        while(getchar() != '\n');
+        return;
+    }
 
     if(index < 1 || index > *cityCount)
     {
@@ -87,10 +102,23 @@ void removeCity(char cities[][30], int *cityCount)
         return;
     }
 
-    for(int i = index - 1; i < *cityCount - 1; i++)
+    int removeIndex = index - 1;
+
+    for(int  i = removeIndex; i < *cityCount; i++)
     {
         strcpy(cities[i], cities[i + 1]);
+        for(int j = 0; j < *cityCount; j++)
+        {
+            distance[i][j] = distance[i + 1][j];
+        }
+    }
 
+    for(int i = 0; i < *cityCount; i++)
+    {
+        for(int j = removeIndex; j < *cityCount - 1; j++)
+        {
+            distance[i][j] = distance[i][j + 1];
+        }
     }
     (*cityCount)--;
 
@@ -120,6 +148,15 @@ void renameCity(char cities[][30], int cityCount)
     printf("Enter the new name for '%s': ", cities[index - 1]);
     scanf(" %[^\n]", newName);
 
+    for(int i = 0; i < cityCount; i++)
+    {
+        if(i != index - 1 && strcmp(cities[i], newName) == 0)
+        {
+            printf("Error: A city with this name already exists!\n");
+            return;
+        }
+    }
+
     strcpy(cities[index - 1], newName);
     printf("City renamed successfully!\n");
 
@@ -127,7 +164,7 @@ void renameCity(char cities[][30], int cityCount)
 
 
 
-void cityManagement(char cities[][30], int *cityCount)
+void cityManagement(char cities[][30], int *cityCount, int distance[MAX_CITIES][MAX_CITIES])
 {
 
     int choice;
@@ -140,7 +177,13 @@ void cityManagement(char cities[][30], int *cityCount)
         printf("4. Rename a city\n");
         printf("5.Back to main menu\n");
         printf("\nEnter your choice: ");
-        scanf("%d", &choice);
+
+        if(scanf("%d", &choice) != 1)
+        {
+            printf("Invalid input!\n");
+            while(getchar() != '\n');
+            continue;
+        }
 
         switch (choice)
         {
@@ -149,11 +192,11 @@ void cityManagement(char cities[][30], int *cityCount)
             break;
 
         case 2:
-            addCity(cities, cityCount);
+            addCity(cities, cityCount, distance);
             break;
 
         case 3:
-            removeCity(cities, cityCount);
+            removeCity(cities, cityCount, distance);
             break;
 
         case 4:
