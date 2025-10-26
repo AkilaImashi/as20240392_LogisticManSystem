@@ -25,14 +25,24 @@ void handleDeliveryRequest(char cities[][30], int cityCount,
         printf("%2d. %s\n", i + 1, cities[i]);
 
     printf("\nEnter source city number: ");
-    scanf("%d", &d.sourceIndex);
+    if(scanf("%d", &d.sourceIndex) != 1)
+    {
+        printf("Invalid input!\n");
+        while(getchar() != '\n'); // Clear input buffer
+        return;
+    }
 
     printf("Enter destination city number: ");
-    scanf("%d", &d.destinationIndex);
+    if(scanf("%d", &d.destinationIndex) != 1)  // FIX: Added input validation
+    {
+        printf("Invalid input!\n");
+        while(getchar() != '\n'); // Clear input buffer
+        return;
+    }
 
     // Validate city numbers
     if (d.sourceIndex < 1 || d.sourceIndex > cityCount ||
-        d.destinationIndex < 1 || d.destinationIndex > cityCount)
+            d.destinationIndex < 1 || d.destinationIndex > cityCount)
     {
         printf("Invalid city numbers!\n");
         return;
@@ -67,7 +77,12 @@ void handleDeliveryRequest(char cities[][30], int cityCount,
 
     // Weight input
     printf("Enter weight of goods (kg): ");
-    scanf("%lf", &d.weight);
+    if(scanf("%lf", &d.weight) != 1)  // FIX: Added input validation
+    {
+        printf("Invalid weight input!\n");
+        while(getchar() != '\n'); // Clear input buffer
+        return;
+    }
     if (d.weight <= 0)
     {
         printf("Invalid weight!\n");
@@ -80,7 +95,12 @@ void handleDeliveryRequest(char cities[][30], int cityCount,
         printf("%d. %s (Capacity: %d kg)\n", i + 1, vehicles[i].type, vehicles[i].capacity);
 
     printf("Enter choice: ");
-    scanf("%d", &d.vehicleIndex);
+    if(scanf("%d", &d.vehicleIndex) != 1)  // FIX: Added input validation
+    {
+        printf("Invalid vehicle selection!\n");
+        while(getchar() != '\n'); // Clear input buffer
+        return;
+    }
 
     if (d.vehicleIndex < 1 || d.vehicleIndex > VEHICLE_COUNT)
     {
@@ -97,7 +117,7 @@ void handleDeliveryRequest(char cities[][30], int cityCount,
         return;
     }
 
-    // === Step 5: Cost, time, and fuel calculations ===
+    // ===  Cost, time, and fuel calculations ===
 
     // a. Delivery Cost
     d.deliveryCost = d.distance * v.ratePerKm * (1 + d.weight / 10000.0);
@@ -170,3 +190,76 @@ void viewAllDeliveries(char cities[][30], Delivery deliveries[], int deliveryCou
 
     printf("=====================================================\n");
 }
+
+void saveDeliveriesToFile(Delivery deliveries[], int deliveryCount, char cities[][30])
+{
+    FILE *fp = fopen("deliveries.txt", "w");
+    if(!fp)
+    {
+        printf("Error opening deliveries.txt for writing!\n");
+        return;
+    }
+
+    fprintf(fp, "%d\n", deliveryCount);
+
+    for(int i = 0; i < deliveryCount; i++)
+    {
+        Delivery d = deliveries[i];
+        fprintf(fp,
+                "%d %d %lf %d %lf %lf %lf %lf %lf %lf %lf %lf\n",
+                d.sourceIndex, d.destinationIndex, d.weight, d.vehicleIndex,
+                d.distance, d.deliveryCost, d.timeHours, d.fuelUsed,
+                d.fuelCost, d.totalCost, d.profit, d.customerCharge);
+    }
+
+    fclose(fp);
+    printf("Deliveries saved successfully to deliveries.txt!\n");
+}
+
+
+// Load deliveries from text file
+int loadDeliveriesFromFile(Delivery deliveries[], int *deliveryCount, char cities[][30])
+{
+    FILE *fp = fopen("deliveries.txt", "r");
+    if (!fp)
+    {
+        printf("No previous delivery records found (deliveries.txt missing).\n");
+        return 0;
+    }
+
+    if(fscanf(fp, "%d", deliveryCount) != 1)  // FIX: Added input validation
+    {
+        printf("Error reading delivery count from file!\n");
+        fclose(fp);
+        return 0;
+    }
+
+    for (int i = 0; i < *deliveryCount; i++)
+    {
+        Delivery d;
+        int result = fscanf(fp,
+                            "%d %d %lf %d %lf %lf %lf %lf %lf %lf %lf %lf",
+                            &d.sourceIndex, &d.destinationIndex, &d.weight, &d.vehicleIndex,
+                            &d.distance, &d.deliveryCost, &d.timeHours, &d.fuelUsed,
+                            &d.fuelCost, &d.totalCost, &d.profit, &d.customerCharge);
+
+        if(result != 12)
+        {
+            printf("Error reading delivery data from file!\n");
+            fclose(fp);
+            return i;
+        }
+
+        deliveries[i] = d;
+
+    }
+
+    fclose(fp);
+    printf("%d deliveries loaded successfully from deliveries.txt!\n", *deliveryCount);
+    return *deliveryCount;
+}
+
+
+
+
+

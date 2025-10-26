@@ -33,6 +33,9 @@ int main()
         printf("2. Distance Management\n");
         printf("3. Vehicle Management\n");
         printf("4. Delivery Request\n");
+        printf("5. View All Deliveries\n");
+        printf("6. Save Deliveries to File\n");
+        printf("7. Load deliveries\n");
         printf("8. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
@@ -44,36 +47,36 @@ int main()
             break;
 
         case 2:
-            inputOrEditDistance(distance, citiesArr, cityCount);
+            //inputOrEditDistance(distance, citiesArr, cityCount);
 
+        {
+            int distChoice;
+            do
             {
-                int distChoice;
-                do
-                {
-                    printf("\n--- DISTANCE MANAGEMENT ---\n");
-                    printf("1. Input/Edit Distance\n");
-                    printf("2. Display Distance Table\n");
-                    printf("3. Back to Main Menu\n");
-                    printf("Enter your choice: ");
-                    scanf("%d", &distChoice);
+                printf("\n--- DISTANCE MANAGEMENT ---\n");
+                printf("1. Input/Edit Distance\n");
+                printf("2. Display Distance Table\n");
+                printf("3. Back to Main Menu\n");
+                printf("Enter your choice: ");
+                scanf("%d", &distChoice);
 
-                    switch (distChoice)
-                    {
-                    case 1:
-                        inputOrEditDistance(distance, citiesArr, cityCount);
-                        break;
-                    case 2:
-                        displayDistanceTable(distance, citiesArr, cityCount);
-                        break;
-                    case 3:
-                        break;
-                    default:
-                        printf("Invalid choice!\n");
-                    }
+                switch (distChoice)
+                {
+                case 1:
+                    inputOrEditDistance(distance, citiesArr, cityCount);
+                    break;
+                case 2:
+                    displayDistanceTable(distance, citiesArr, cityCount);
+                    break;
+                case 3:
+                    break;
+                default:
+                    printf("Invalid choice!\n");
                 }
-                while (distChoice != 3);
             }
-            break;
+            while (distChoice != 3);
+        }
+        break;
 
         case 3:
             displayVehicles(vehicles);
@@ -87,7 +90,18 @@ int main()
             viewAllDeliveries(citiesArr, deliveries, deliveryCount);
             break;
 
+        case 6:
+            saveDeliveriesToFile(deliveries, deliveryCount, citiesArr);
+            break;
+
+        case 7:
+            loadDeliveriesFromFile(deliveries, &deliveryCount, citiesArr);
+            break;
+
+
         case 8:
+            printf("Saving deliveries before exit...\n");
+            saveDeliveriesToFile(deliveries, deliveryCount, citiesArr);
             printf("Exiting program...\n");
             break;
 

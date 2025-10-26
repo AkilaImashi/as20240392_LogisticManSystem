@@ -33,7 +33,8 @@ void handleDeliveryRequest(char cities[][30], int cityCount,
 
 void viewAllDeliveries(char cities[][30], Delivery deliveries[], int deliveryCount);
 
-
+void saveDeliveriesToFile(Delivery deliveries[], int deliveryCount, char cities[][30]);
+int loadDeliveriesFromFile(Delivery deliveries[], int *deliveryCount, char cities[][30]);
 
 
 #endif // DELIVERY_H
