@@ -7,7 +7,6 @@
 #include "delivery.h"
 #include "route_file.h"
 
-
 int main()
 {
     char citiesArr[MAX_CITIES][30];
@@ -17,9 +16,11 @@ int main()
     Delivery deliveries[MAX_DELIVERIES];
     int deliveryCount = 0;
 
-    //initialize data
-    getCities(citiesArr, &cityCount);
-    //cityManagement(citiesArr, &cityCount);
+    initializeVehicles(vehicles);
+
+    // Initialize distance matrix
+    initializeDistance(distance, MAX_CITIES);
+
 
     initializeDistance(distance, cityCount);
     initializeVehicles(vehicles);
@@ -62,7 +63,7 @@ int main()
         switch (choice)
         {
         case 1:
-            cityManagement(citiesArr, &cityCount);
+            cityManagement(citiesArr, &cityCount, distance);
             break;
 
         case 2:

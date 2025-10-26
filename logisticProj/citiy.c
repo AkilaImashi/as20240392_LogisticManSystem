@@ -1,7 +1,7 @@
 // city.c
 #include <stdio.h>
 #include <string.h>
-#include "city.h
+#include "city.h"
 #include "distance.h"
 
 void getCities(char cities[][30], int *cityCount)

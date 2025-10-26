@@ -4,8 +4,12 @@
 
 #define MAX_CITIES 30
 
-void getCities(char cities[][30], int *cityCount);
-void cityManagement(char cities[][30], int *cityCount);
+void addCity(char cities[][30], int *cityCount,
+             int distance[MAX_CITIES][MAX_CITIES]);
+void removeCity(char cities[][30], int *cityCount,
+                int distance[MAX_CITIES][MAX_CITIES]);
+void cityManagement(char cities[][30], int *cityCount,
+                    int distance[MAX_CITIES][MAX_CITIES]);
 
 #endif
 
